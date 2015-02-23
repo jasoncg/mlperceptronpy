@@ -1,5 +1,15 @@
+# jasoncg
+# 2015-02-22
+#
+# mlperceptron.py - A multilayer perceptron implementation in Python
+#
+import timer
 import random
 import math
+import numpy as np
+import pyopencl as cl
+import pyopencl.tools
+import pyopencl.array
 
 class Neuron:
 	def __init__(self, index, weights, perceptron_layer):
@@ -22,12 +32,21 @@ class Neuron:
 			ex=math.exp(-input)
 			return 1.0/(1.0+ex)
 		except:
-			print("Fatal Error %s", -input)
+			# If overflow, snap to either 1 or 0
+			if -input>0:
+				# lim(sigmoid(x), -inf)=0
+				return 1
+			else:
+				# lim(sigmoid(x), inf)=1
+				return 0
+			#print("Fatal Error %s", -input)
 
 	@staticmethod
 	def dxsigmoid(input):
-		ex = math.exp(input)
-		return (ex/math.pow(1+ex, 2.0))
+		#ex = math.exp(input)
+		#return (ex/math.pow(1+ex, 2.0))
+		s = Neuron.sigmoid(input)
+		return s*(1-s)
 	
 	@staticmethod
 	def activate(input):
@@ -37,13 +56,13 @@ class Neuron:
 		return Neuron.dxsigmoid(input)
 	def last_guessedb(self):
 		if self.last_guessed<0.5:
-			return False
-		return True
+			return 0
+		return 1
 	@staticmethod
 	def to_output(output):
 		if output<0.5:
-			return False
-		return True
+			return 0
+		return 1
 	'''
 	@staticmethod
 	def activate(input):
@@ -259,9 +278,8 @@ def test_AND():
 	print("%s %s" %([1,1], p.evaluate([1,1])))
 
 def test_XOR():
-	p=Perceptron.new_perceptron_random(2, 50)
-	p.add_next_layer(50)
-	#p.add_next_layer(50)
+	p=Perceptron.new_perceptron_random(2, 40)
+	p.add_next_layer(40)
 	p.add_next_layer(1)
 
 	print("%s %s" %([0,0], p.evaluate([0,0])))
@@ -269,16 +287,16 @@ def test_XOR():
 	print("%s %s" %([1,0], p.evaluate([1,0])))
 	print("%s %s" %([1,1], p.evaluate([1,1])))
 
-	for i in range(0, 4000):
-		p.backpropagate([0,0], [0], 0.1)
-		p.backpropagate([0,1], [1], 0.1)
-		p.backpropagate([1,0], [1], 0.1)
-		p.backpropagate([1,1], [0], 0.1)
+	for i in range(0, 2):
+		for i2 in range(0, 2000):
+			p.backpropagate([0,0], [0], 0.05)
+			p.backpropagate([0,1], [1], 0.05)
+			p.backpropagate([1,0], [1], 0.05)
+			p.backpropagate([1,1], [0], 0.05)
 
-	print("%s %s" %([0,0], p.evaluate([0,0])))
-	print("%s %s" %([0,1], p.evaluate([0,1])))
-	print("%s %s" %([1,0], p.evaluate([1,0])))
-	print("%s %s" %([1,1], p.evaluate([1,1])))
+		print("%s %s" %([0,0], p.evaluate([0,0])))
+		print("%s %s" %([0,1], p.evaluate([0,1])))
+		print("%s %s" %([1,0], p.evaluate([1,0])))
+		print("%s %s" %([1,1], p.evaluate([1,1])))
 
-test_AND()
 test_XOR()

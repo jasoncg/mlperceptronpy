@@ -3,6 +3,42 @@
 #
 # mlperceptron.py - A multilayer perceptron implementation in Python
 #
+# This implementation is designed for readability, not performance.
+# Each layer in the perceptron is stored as a Perceptron instance.  Each
+# neuron is a seperate Neuron instance.  
+#
+# Example:
+# Generate a new random perceptron that takes 2 inputs and has 40 neurons
+# in the first layer, then add a 40 neuron hidden layer and a 1 neuron
+# output layer.  Since the output layer has only 1 neuron, the network
+# outputs only one value
+#
+#	p=Perceptron.new_perceptron_random(2, 40)
+#	p.add_next_layer(40)
+#	p.add_next_layer(1)
+#
+# Train the network with backpropagation.  This function takes three inputs:
+# - A list of the input data
+# - A list of the output data
+# - The learning rate
+# This particular example should train the network to AND two boolean values together.
+#
+#	for i in range(0, 1000):
+#		p.backpropagate([0,0], [0], 0.1)
+#		p.backpropagate([0,1], [0], 0.1)
+#		p.backpropagate([1,0], [0], 0.1)
+#		p.backpropagate([1,1], [1], 0.1)
+#
+# Test the trained network.  The evaluate function takes a list of input data and 
+# returns a list of the calculatated result
+#
+#	print("%s %s" %([0,0], p.evaluate([0,0])))	# Shoule be 0
+#	print("%s %s" %([0,1], p.evaluate([0,1])))	# Shoule be 0
+#	print("%s %s" %([1,0], p.evaluate([1,0])))	# Shoule be 0
+#	print("%s %s" %([1,1], p.evaluate([1,1])))	# Shoule be 1
+#
+#
+#
 import timer
 import random
 import math

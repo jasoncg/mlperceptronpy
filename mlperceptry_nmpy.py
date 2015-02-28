@@ -357,10 +357,6 @@ class Perceptron:
 
 		return error
 	# Evaluate the given inputs
-	# If dropout_rate>0 then a dropout mask is applied to the weights in each
-	# hidden layer with a percentage of each layer's weights marked out so as
-	# not to be used in the evaluation.  This mask is saved for backpropagation
-	# so those masked weights are not updated.
 	def evaluate(self, inputs, layer_index=0, cache_results=False, dropout_rate=0.0, normalized=False):
 		if not normalized and layer_index==0:
 			# Only normalize the input layer
@@ -662,61 +658,6 @@ trainingset=[{'name': 'AND',
 			}
 ]
 
-'''
-					[[0, 0], [0, 0, 0]],
-					[[0, 1], [0, 0, 1]],
-					[[0, 2], [0, 1, 0]],
-
-					[[1, 0], [0, 0, 1]],
-					[[1, 1], [0, 1, 0]],
-					[[1, 2], [0, 1, 1]],
-
-					[[2, 0], [0, 1, 0]],
-					[[2, 1], [0, 1, 1]],
-					[[2, 2], [1, 0, 0]],
-
-
-					[[0,0, 0,0], [0, 0, 0]],
-					[[0,0, 0,1], [0, 0, 1]],
-					[[0,0, 1,0], [0, 1, 0]],
-					[[0,0, 1,1], [0, 1, 1]],
-
-					[[0,1, 0,0], [0, 0, 1]],
-					[[0,1, 0,1], [0, 1, 0]],
-					[[0,1, 1,0], [0, 1, 1]],
-					[[0,1, 1,1], [1, 0, 0]],
-					
-					[[1,0, 0,0], [0, 1, 0]],
-					[[1,0, 0,1], [0, 1, 1]],
-					[[1,0, 1,0], [1, 0, 0]],
-					[[1,0, 1,1], [1, 0, 1]],
-					
-					[[1,1, 0,0], [0, 1, 1]],
-					[[1,1, 0,1], [1, 0, 0]],
-					[[1,1, 1,0], [1, 0, 1]],
-					[[1,1, 1,1], [1, 1, 0]]
-
-			[[0,0], [0]],
-			[[0,1], [1]],
-			[[0,2], [2]],
-			[[0,3], [3]],
-
-			[[1,0], [1]],
-			[[1,1], [2]],
-			[[1,2], [3]],
-			[[1,3], [4]],
-			
-			[[2,0], [2]],
-			[[2,1], [3]],
-			[[2,2], [4]],
-			[[2,3], [5]],
-			
-			[[3,0], [3]],
-			[[3,1], [4]],
-			[[3,2], [5]],
-			[[3,3], [6]]
-
-'''
 iterations_per_epoch= 100
 epochs_until_grow	= 2
 grow_amount			= 2

@@ -7,9 +7,6 @@ import timer
 import random
 import math
 import numpy as np
-import pyopencl as cl
-import pyopencl.tools
-import pyopencl.array
 
 def ndprint(a, format_string ='{0:.2f}'):
 	for i in range(0, len(a)):
